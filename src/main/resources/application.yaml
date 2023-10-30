@@ -1,0 +1,14 @@
+server:
+  port: 8041
+
+spring.cloud.stream:
+  function:
+    definition: producer
+  bindings:
+    producer-out-0:
+      destination: order-created
+  kafka:
+    binder:
+      replication-factor: 1
+      brokers: localhost:9092
+      auto-create-topics: true
