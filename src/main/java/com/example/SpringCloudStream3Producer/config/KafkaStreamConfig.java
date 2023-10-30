@@ -23,5 +23,4 @@ public class KafkaStreamConfig {
         return sink::asFlux;
     }
 
-
 }
