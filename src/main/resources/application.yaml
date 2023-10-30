@@ -3,10 +3,12 @@ server:
 
 spring.cloud.stream:
   function:
-    definition: producer
+    definition: producer;consumer
   bindings:
     producer-out-0:
       destination: order-created
+    consumer-in-0:
+      destination: order-updated
   kafka:
     binder:
       replication-factor: 1
