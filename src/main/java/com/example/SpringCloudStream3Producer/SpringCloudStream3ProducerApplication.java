@@ -20,7 +20,7 @@ public class SpringCloudStream3ProducerApplication implements CommandLineRunner 
 
 	@Override
 	public void run(String... args) throws Exception {
-		Book book = new Book(1, "attwn");
+		Book book = new Book(52671, "Harry Potter 1", null);
 		sink.tryEmitNext(book);
 		System.out.println("Book emitted successfully...");
 	}
