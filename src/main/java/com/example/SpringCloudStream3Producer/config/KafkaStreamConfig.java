@@ -26,7 +26,7 @@ public class KafkaStreamConfig {
 
     @Bean
     public Consumer<Book> consumer(){
-        return book -> System.out.println("Book received .. " + book.getId() + "-" + book.getBookName() + "-" + book.getBookIsbn());
+        return book -> System.out.println("Book received .. " + book.getId() + "-" + book.getBookName() + "-" + book.getBookIsbn() + "-" + book.getAuthorId());
     }
 
 }
