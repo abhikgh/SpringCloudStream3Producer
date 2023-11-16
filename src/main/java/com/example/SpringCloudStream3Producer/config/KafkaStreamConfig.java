@@ -18,7 +18,7 @@ public class KafkaStreamConfig {
         return Sinks.many().unicast().onBackpressureBuffer();
     }
 
-    //flux
+    //flux (Sink)
     @Bean
     public Supplier<Flux<Book>> producer(Sinks.Many<Book> sink) {
         return sink::asFlux;
