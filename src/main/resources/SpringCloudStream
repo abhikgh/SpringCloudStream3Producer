@@ -1,0 +1,66 @@
+Spring Cloud Stream (3.2.x)
+=================================
+Framework for Event-driven, non-blocking, scalable microservices which communicates over asynchronous messages
+
+<!--Spring Cloud Stream with Kafka binder -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-stream</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-stream-binder-kafka-streams</artifactId>
+</dependency>
+
+-----------------------------------------------------------------
+bindings creating beans of types : java.util.function.[Supplier/Function/Consumer]
+
+spring:
+  cloud:
+    stream:
+      function:
+        definition: supplier;consumer
+      bindings:
+        supplier-out-0:
+          destination: order-created
+        consumer-in-0:
+          destination: order-updated
+      kafka:
+        binder:
+          replication-factor: 1
+          brokers: localhost:9092
+          auto-create-topics: true
+
+@SpringBootApplication
+public class SpringCloudStream3ProducerApplication implements CommandLineRunner {
+
+	@Autowired
+	private Sinks.Many<Book> sink;
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringCloudStream3ProducerApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		Book book = new Book(52671, "Harry Potter 1", null,  null);
+		sink.tryEmitNext(book);
+		System.out.println("Book emitted successfully...");
+	}
+}
+
+
+Spring Cloud Stream versions
+=========================================
+Spring Cloud Stream	                        Spring Cloud	                                        Spring Boot
+4.0.x	                                    2022.0.x aka Kilburn	                                3.0.x
+3.2.x	                                    2021.0.x aka Jubilee	                2.6.x, 2.7.x (Starting with 2021.0.3 of Spring Cloud)
+3.1.x	                                    2020.0.x aka Ilford	2.4.x, 2.5.x        (Starting with 2020.0.3 of Spring Cloud)

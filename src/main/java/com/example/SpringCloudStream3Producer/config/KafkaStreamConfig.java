@@ -20,7 +20,7 @@ public class KafkaStreamConfig {
 
     //sink as flux
     @Bean
-    public Supplier<Flux<Book>> producer(Sinks.Many<Book> sink) {
+    public Supplier<Flux<Book>> supplier(Sinks.Many<Book> sink) {
         return sink::asFlux;
     }
 
