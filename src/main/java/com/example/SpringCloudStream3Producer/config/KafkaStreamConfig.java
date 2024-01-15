@@ -40,4 +40,38 @@ public class KafkaStreamConfig {
         return book -> System.out.println("Book received .. " + book.getId() + "-" + book.getBookName() + "-" + book.getBookIsbn() + "-" + book.getAuthorId());
     }
 
+    /*
+
+        private Random random = new Random();
+
+        @Bean
+        public Supplier<Flux<Integer>> producer(){
+            return () -> Flux.interval(Duration.ofSeconds(5)).map(value -> random.nextInt(1000) + 1).log();
+        }
+
+        @Bean
+        public Function<Flux<Integer>, Flux<String>> processor(){
+            return integerFlux -> integerFlux.map(this::evaluateFizzBuzz).log();
+        }
+
+        @Bean
+        public Consumer<String> consumer(){
+            return value -> System.out.println("Consumer received :: " + value);
+        }
+
+        private String evaluateFizzBuzz(Integer value) {
+            if (value % 15 == 0) {
+                return "FizzBuzz";
+            } else if (value % 5 == 0) {
+                return "Buzz";
+            } else if (value % 3 == 0) {
+                return "Fizz";
+            } else {
+                return String.valueOf(value);
+            }
+        }
+
+
+     */
+
 }
