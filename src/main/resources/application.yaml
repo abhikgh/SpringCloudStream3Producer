@@ -5,10 +5,14 @@ spring:
   cloud:
     stream:
       function:
-        definition: supplier;consumer
+        definition: supplier;function;consumer
       bindings:
         supplier-out-0:
           destination: order-created
+        function-in-0:
+          destination: order-created
+        function-out-0:
+          destination: order-updated
         consumer-in-0:
           destination: order-updated
       kafka:
@@ -16,3 +20,11 @@ spring:
           replication-factor: 1
           brokers: localhost:9092
           auto-create-topics: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springbootdb
+    username: postgres
+    password: tiger
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 5000
+      maximum-pool-size: 5
