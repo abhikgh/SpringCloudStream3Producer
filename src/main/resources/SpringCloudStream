@@ -20,7 +20,8 @@ Framework for Event-driven, non-blocking, scalable microservices which communica
     <artifactId>spring-cloud-stream-binder-kafka-streams</artifactId>
 </dependency>
 
------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+
 bindings creating beans of types : java.util.function.[Supplier/Function/Consumer]
 
 spring:
@@ -57,6 +58,7 @@ public class SpringCloudStream3ProducerApplication implements CommandLineRunner 
 	}
 }
 
+----------------------------------------------------------------------------------------------------------------------------------
 
 Spring Cloud Stream versions
 =========================================
@@ -64,3 +66,17 @@ Spring Cloud Stream	                        Spring Cloud	                       
 4.0.x	                                    2022.0.x aka Kilburn	                                3.0.x
 3.2.x	                                    2021.0.x aka Jubilee	                2.6.x, 2.7.x (Starting with 2021.0.3 of Spring Cloud)
 3.1.x	                                    2020.0.x aka Ilford	2.4.x, 2.5.x        (Starting with 2020.0.3 of Spring Cloud)
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Source Processor
+====================
+receives records from 1/more Kafka Topic and forwards it to downstream processors
+
+Sink Processor
+====================
+receives records from upstream Processors and sends it to a Kafka Topic
+
+Connector API
+======================
+The Connector API allows building and running reusable producers or consumers that connect Kafka topics to existing applications or data systems
