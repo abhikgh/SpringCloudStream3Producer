@@ -1,6 +1,41 @@
 Spring Cloud Stream (3.2.x)
 =================================
-Framework for Event-driven, non-blocking, scalable microservices which communicates over asynchronous messages
+Framework for Event-driven, Non-blocking, Scalable microservices which communicates over asynchronous messages
+Provides an abstraction layer for event-driven systems to communicate over asynchronous messages
+Uses Reactor library which allows us to write asynchronous, non blocking, declarative code.
+
+Spring Cloud Stream Advantages
+================================
+- Asynchronous communication
+- Fast message delivery
+- Highly scalable
+- Backpressure support
+- Middleware can be changed
+- Component separation
+
+Spring Cloud Stream versions
+=========================================
+Spring Cloud Stream	                        Spring Cloud	                                        Spring Boot
+4.0.x	                                    2022.0.x aka Kilburn	                                3.0.x
+3.2.x	                                    2021.0.x aka Jubilee	                2.6.x, 2.7.x (Starting with 2021.0.3 of Spring Cloud)
+3.1.x	                                    2020.0.x aka Ilford	2.4.x, 2.5.x        (Starting with 2020.0.3 of Spring Cloud)
+
+
+Source Processor
+====================
+receives records from 1/more Kafka Topic and forwards it to downstream processors
+
+Sink Processor
+====================
+receives records from upstream Processors and sends it to a Kafka Topic
+
+        Supplier<Flux<?>>
+Sink -----------------------> Kafka Topic --------> Source ------------> Processors
+
+Connector API
+======================
+The Connector API allows building and running reusable producers or consumers that connect Kafka topics to existing applications or data systems
+
 
 <!--Spring Cloud Stream with Kafka binder -->
 <dependency>
@@ -28,10 +63,14 @@ spring:
   cloud:
     stream:
       function:
-        definition: supplier;consumer
+        definition: supplier;function;consumer
       bindings:
         supplier-out-0:
           destination: order-created
+        function-in-0:
+          destination: order-created
+        function-out-0:
+          destination: order-updated
         consumer-in-0:
           destination: order-updated
       kafka:
@@ -39,6 +78,40 @@ spring:
           replication-factor: 1
           brokers: localhost:9092
           auto-create-topics: true
+
+
+@Configuration
+public class KafkaStreamConfig {
+
+    @Autowired
+    private BookService bookService;
+
+    //Sink
+    @Bean
+    public Sinks.Many<Book> sink() {
+        return Sinks.many().unicast().onBackpressureBuffer();  //unicast : 1-1 mapping
+    }
+
+    //sink as flux
+    @Bean
+    public Supplier<Flux<Book>> supplier(Sinks.Many<Book> sink) {
+        return sink::asFlux;
+    }
+
+    @Bean
+    public Function<Flux<Book>, Flux<Book>> function() {
+        return bookFlux -> bookFlux.map(bookService::updateBook);
+    }
+
+    @Bean
+    public Consumer<Book> consumer(){
+        return book -> System.out.println("Book received .. " + book.getId() + "-" + book.getBookName() + "-" + book.getBookIsbn() + "-" + book.getAuthorId());
+    }
+
+}
+
+public Book updateBook(Book book) {
+}
 
 @SpringBootApplication
 public class SpringCloudStream3ProducerApplication implements CommandLineRunner {
@@ -58,25 +131,19 @@ public class SpringCloudStream3ProducerApplication implements CommandLineRunner 
 	}
 }
 
-----------------------------------------------------------------------------------------------------------------------------------
-
-Spring Cloud Stream versions
-=========================================
-Spring Cloud Stream	                        Spring Cloud	                                        Spring Boot
-4.0.x	                                    2022.0.x aka Kilburn	                                3.0.x
-3.2.x	                                    2021.0.x aka Jubilee	                2.6.x, 2.7.x (Starting with 2021.0.3 of Spring Cloud)
-3.1.x	                                    2020.0.x aka Ilford	2.4.x, 2.5.x        (Starting with 2020.0.3 of Spring Cloud)
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-Source Processor
-====================
-receives records from 1/more Kafka Topic and forwards it to downstream processors
+Kafka Commands
+=================================
+Remove Logs
+----------------
+D:\tmp\kafka-logs
+D:\Softwares\kafka_2.12-3.1.0\logs
 
-Sink Processor
-====================
-receives records from upstream Processors and sends it to a Kafka Topic
+Start
+---------
+cmd > zkserver
+D:\Softwares\kafka_2.12-3.1.0>.\bin\windows\kafka-server-start.bat .\config\server.properties
 
-Connector API
-======================
-The Connector API allows building and running reusable producers or consumers that connect Kafka topics to existing applications or data systems
+----------------------------------------------------------------------------------------------------------------------------------
