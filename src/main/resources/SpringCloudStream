@@ -1,7 +1,7 @@
 Spring Cloud Stream (3.2.x)
 =================================
-Framework for Event-driven, Non-blocking, Scalable microservices which communicates over asynchronous messages
-Provides an abstraction layer for event-driven systems to communicate over asynchronous messages
+Framework for building Event-driven, Non-blocking, Highly-Scalable microservices which communicates over asynchronous messages
+Abstraction layer for event-driven, asynchronous ,essaging systems
 Uses Reactor library which allows us to write asynchronous, non blocking, declarative code.
 
 Spring Cloud Stream Advantages
