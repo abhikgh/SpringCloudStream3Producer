@@ -1,8 +1,7 @@
 Spring Cloud Stream (3.2.x)
 =================================
-Framework for building Event-driven, Non-blocking, Highly-Scalable microservices which communicates over asynchronous messages
-Abstraction layer for event-driven, asynchronous ,essaging systems
-Uses Reactor library which allows us to write asynchronous, non blocking, declarative code.
+Framework for Event-driven, non-blocking programming which communicates over Asynchronous messaging
+uses Reactor library
 
 Spring Cloud Stream Advantages
 ================================
@@ -27,10 +26,10 @@ receives records from 1/more Kafka Topic and forwards it to downstream processor
 
 Sink Processor
 ====================
-receives records from upstream Processors and sends it to a Kafka Topic
+receives records from Source Processors and sends it to a Kafka Topic
 
         Supplier<Flux<?>>
-Sink -----------------------> Kafka Topic --------> Source ------------> Processors
+Sink -----------------------> Kafka Topic --------> Source Procssor ------------> Sink Processor ----------------> Kafka Topic
 
 Connector API
 ======================
